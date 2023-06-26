@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: to-do list
+  description: |-
+    Documentação da API RESTfull do projeto to-do list.
+
+    Links Úteis:
+    - [Repositório do projeto to-do-list](https://github.com/donvitonet/to-do-list)
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:8000
+    description: Ambiente de Desenvolvimento
+
+
+tags:
+  - name: task
+    description: Gestão de tarefas
+
+paths:
+  /tasks:
+    get:
+      tags:
+        - task
+      parameters:
+        - name: status
+          in: query
+          description: Filtrar tarefa por status
+          required: false
+          schema:
+            type: string
+            enum:
+              - complete
+              - uncomplete
+          examples:
+            complete:
+              value: complete
+              summary: Todas as tarefas completas
+            order_by_task_desc:
+              value: uncomplete
+              summary: Todas as tarefas incompletas
+        - name: sort
+          in: query
+          description: Ordenar a lista de tarefas
+          required: false
+          schema:
+            type: string
+            enum:
+              - -task
+              - +task
+          examples:
+            order_by_task_asc:
+              value: +task
+              summary: Classificar em ordem crescente
+            order_by_task_desc:
+              value: -task
+              summary: Classificar em ordem decrescente
+      responses:
+        '200':
+          description: Operação bem sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          description: Parâmetros inválidos
+        '500':
+          description: Erro interno do servidor
