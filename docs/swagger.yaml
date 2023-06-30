@@ -2,69 +2,245 @@ openapi: 3.0.3
 info:
   title: to-do list
   description: |-
-    Documentação da API RESTfull do projeto to-do list.
+    Documentação da API de gestão de tarefas.
 
     Links Úteis:
-    - [Repositório do projeto to-do-list](https://github.com/donvitonet/to-do-list)
+    - [Github](https://github.com/donvitonet/to-do-list)
+    - [HTTP Status Codes](https://www.restapitutorial.com/httpstatuscodes.html)
+    - [Best Practices in API Design](https://swagger.io/blog/api-design/api-design-best-practices/)
+    - [Best Practices in Commit Message](https://github.com/BeeTech-global/bee-stylish/blob/master/commits/README.md)
+    - [Percent-encoding](https://tools.ietf.org/html/rfc3986#section-2.2)
   version: 0.0.1
 
 servers:
   - url: http://localhost:8000
-    description: Ambiente de Desenvolvimento
-
+    description: Servidor de desenvolvimento
 
 tags:
-  - name: task
-    description: Gestão de tarefas
+  - name: Tarefa
+    description: Operações de tarefas
 
 paths:
   /tasks:
     get:
       tags:
-        - task
+        - Tarefa
+      summary: Lista tarefas
+      description: Lista tarefas
       parameters:
-        - name: status
-          in: query
-          description: Filtrar tarefa por status
-          required: false
-          schema:
-            type: string
-            enum:
-              - complete
-              - uncomplete
-          examples:
-            complete:
-              value: complete
-              summary: Todas as tarefas completas
-            order_by_task_desc:
-              value: uncomplete
-              summary: Todas as tarefas incompletas
-        - name: sort
-          in: query
-          description: Ordenar a lista de tarefas
-          required: false
-          schema:
-            type: string
-            enum:
-              - -task
-              - +task
-          examples:
-            order_by_task_asc:
-              value: +task
-              summary: Classificar em ordem crescente
-            order_by_task_desc:
-              value: -task
-              summary: Classificar em ordem decrescente
+        - $ref: '#/components/parameters/filterTasksByStatusParam'
+        - $ref: '#/components/parameters/sortTasksParam'
       responses:
-        '200':
-          description: Operação bem sucedida
+        200:
+          description: Retorna uma lista de tarefas.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
-        '400':
-          description: Parâmetros inválidos
-        '500':
-          description: Erro interno do servidor
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+    post:
+      tags:
+        - Tarefa
+      summary: Cria uma tarefa
+      description: Cria uma tarefa
+      requestBody:
+        description: Cria uma tarefa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: string
+                  example: Atualizar Servidor
+        required: true
+      responses:
+        201:
+          description: Retorna o identificador único da nova tarefa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/TaskId'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+  /tasks/{id}:
+    get:
+      tags:
+        - Tarefa
+      summary: Detalha uma tarefa
+      description: Detalha uma tarefa
+      parameters:
+        - $ref: '#/components/parameters/taskIdParam'
+      responses:
+        200:
+          description: Retorna uma tarefa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+    put:
+      tags:
+        - Tarefa
+      summary: Atualiza uma tarefa
+      description: Atualiza uma tarefa
+      parameters:
+        - $ref: '#/components/parameters/taskIdParam'
+      requestBody:
+        description: Atualiza uma tarefa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      responses:
+        204:
+          $ref: '#/components/responses/204NoContent'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+    delete:
+      tags:
+        - Tarefa
+      summary: Exclui uma tarefa
+      description: Exclui uma tarefa
+      parameters:
+        - $ref: '#/components/parameters/taskIdParam'
+      responses:
+        204:
+          $ref: '#/components/responses/204NoContent'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+  /tasks/{id}/done:
+    patch:
+      tags:
+        - Tarefa
+      summary: Conclui uma tarefa
+      description: Conclui uma tarefa
+      parameters:
+        - $ref: '#/components/parameters/taskIdParam'
+      responses:
+        204:
+          $ref: '#/components/responses/204NoContent'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+  /tasks/{id}/undone:
+    patch:
+      tags:
+        - Tarefa
+      summary: Volta uma tarefa para não concluído
+      description: Volta uma tarefa para não concluído
+      parameters:
+        - $ref: '#/components/parameters/taskIdParam'
+      responses:
+        204:
+          $ref: '#/components/responses/204NoContent'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+
+components:
+  examples:
+    notFilterTasksByStatusExample:
+      summary: Não filtra tarefas por status
+    filterTasksDoneExample:
+      value: true
+      summary: Lista tarefas concluídas
+    filterTasksNotDoneExample:
+      value: false
+      summary: Lista tarefas incompletas
+
+    notSortTaskExample:
+      summary: Não ordena a lista de tarefas.
+    sortTaskAsc:
+      value: +task
+      summary: Ordena a lista de tarefas em ordem crescente (Percent-encoding)
+    sortTaskDesc:
+      value: -task
+      summary: Ordena a lista de tarefas em ordem decrescente
+
+  parameters:
+    taskIdParam:
+      name: id
+      in: path
+      description: Identificador único da tarefa
+      required: true
+      schema:
+        $ref: '#/components/schemas/TaskId'
+
+    filterTasksByStatusParam:
+      name: status
+      in: query
+      description: Filtra um lista de tarefas por status
+      required: false
+      schema:
+        type: boolean
+      examples:
+        notFilterTasksByStatusExample:
+          $ref: '#/components/examples/notFilterTasksByStatusExample'
+        filterTasksDoneExample:
+          $ref: '#/components/examples/filterTasksDoneExample'
+        filterTasksNotDoneExample:
+          $ref: '#/components/examples/filterTasksNotDoneExample'
+
+    sortTasksParam:
+      name: sort
+      in: query
+      description: Ordena a lista de tarefas
+      required: false
+      schema:
+        type: string
+        enum:
+          - -task
+          - +task
+      examples:
+        notSortTaskExample:
+          $ref: '#/components/examples/notSortTaskExample'
+        sortTaskAsc:
+          $ref: '#/components/examples/sortTaskAsc'
+        sortTaskDesc:
+          $ref: '#/components/examples/sortTaskDesc'
+
+  responses:
+    204NoContent:
+      description: Requisição processada com sucesso e sem resposta de retorno.
+    400BadRequest:
+      description: Requisição inválida
+    500InternalServerError:
+      description: Ocorreu um erro ao processar a requisição.
+
+  schemas:
+    TaskId:
+      type: integer
+      minimum: 1
+      example: 10
+    Task:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TaskId'
+        task:
+          type: string
+          example: Atualizar o servidor
+        done:
+          type: boolean
+          example: false
