@@ -127,7 +127,7 @@ paths:
           $ref: '#/components/responses/400BadRequest'
         500:
           $ref: '#/components/responses/500InternalServerError'
-  /tasks/{id}/done:
+  /tasks/{id}/complete:
     patch:
       tags:
         - Tarefa
@@ -142,12 +142,12 @@ paths:
           $ref: '#/components/responses/400BadRequest'
         500:
           $ref: '#/components/responses/500InternalServerError'
-  /tasks/{id}/undone:
+  /tasks/{id}/uncomplete:
     patch:
       tags:
         - Tarefa
-      summary: Volta uma tarefa para não concluído
-      description: Volta uma tarefa para não concluído
+      summary: Volta uma tarefa para não concluída
+      description: Volta uma tarefa para não concluída
       parameters:
         - $ref: '#/components/parameters/taskIdParam'
       responses:
@@ -167,7 +167,7 @@ components:
       summary: Lista tarefas concluídas
     filterTasksNotDoneExample:
       value: false
-      summary: Lista tarefas incompletas
+      summary: Lista tarefas não concluídas
 
     notSortTaskExample:
       summary: Não ordena a lista de tarefas.
@@ -241,6 +241,6 @@ components:
         task:
           type: string
           example: Atualizar o servidor
-        done:
+        complete:
           type: boolean
           example: false
