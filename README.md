@@ -37,7 +37,7 @@ ativos, execute:
 ``docker-compose ps``
 ### Comando para executar outros comandos dentro do contêiner
 ---
-Você pode usar o comando ``docker-compose exec`` para executar comandos nos contêineres de serviço, como um ``ls -l` para mostrar informações detalhadas sobre os arquivos no diretório do aplicativo:
+Você pode usar o comando ``docker-compose exec`` para executar comandos nos contêineres de serviço, como um ``ls -l`` para mostrar informações detalhadas sobre os arquivos no diretório do aplicativo:
 
 ``docker-compose exec app ls -l``
 
