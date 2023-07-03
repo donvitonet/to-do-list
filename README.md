@@ -6,6 +6,7 @@ Acesse o aplicativo no seu navegador utilizando o endereço
 
 ## Links
 - [Conventional Commits](https://github.com/BeeTech-global/bee-stylish/blob/master/commits/README.md)
+- [Makefile](https://embarcados.com.br/introducao-ao-makefile/)
 
 ## /docs
 - Especificação da API: /docs/swagger.yaml
@@ -15,6 +16,15 @@ Acesse o aplicativo no seu navegador utilizando o endereço
 ---
 Crie o arquivo ``.env`` utilizando como base ``.env.example``.
 - Defina as variáveis de ambiente para o MySQL no arquivo ``.env``.
+
+### Makefile
+Utilizado como script de atalhos para necessidades do ambiente de desenvolvimento.
+
+Comandos:
+- ``make build`` atalho para criar uma imagem do aplicativo com o docker-compose.
+- ``make up`` atalho para executar o ambiente de desenvolvimento em segundo plano.
+
+Veja todos os comandos no arquivo ``Makefile``.
 
 ### Docker
 ---
@@ -40,7 +50,6 @@ ativos, execute:
 Você pode usar o comando ``docker-compose exec`` para executar comandos nos contêineres de serviço, como um ``ls -l`` para mostrar informações detalhadas sobre os arquivos no diretório do aplicativo:
 
 ``docker-compose exec app ls -l``
-
 
 ### Comando para exibir logs gerados
 ---
