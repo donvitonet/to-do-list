@@ -7,6 +7,7 @@ Acesse o aplicativo no seu navegador utilizando o endereço
 ## Links
 - [Conventional Commits](https://github.com/BeeTech-global/bee-stylish/blob/master/commits/README.md)
 - [Makefile](https://embarcados.com.br/introducao-ao-makefile/)
+- [STDIN E STDOUT](https://www.certificacaolinux.com.br/comando-linux-condutores/)
 
 ## /docs
 - Especificação da API: /docs/swagger.yaml
@@ -23,6 +24,7 @@ Utilizado como script de atalhos para necessidades do ambiente de desenvolviment
 Comandos:
 - ``make build`` atalho para criar uma imagem do aplicativo com o docker-compose.
 - ``make up`` atalho para executar o ambiente de desenvolvimento em segundo plano.
+- ``make logs`` atalho para ver os logs de execução do php "ao vivo".
 
 Veja todos os comandos no arquivo ``Makefile``.
 

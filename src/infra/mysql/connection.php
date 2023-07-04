@@ -20,6 +20,7 @@ class DatabaseConnection
     }
 
     $env = parse_ini_file($path);
+    error_log(print_r($env, true));
 
     $dbhost = $env['DB_HOST'];
     $dbname = $env['DB_DATABASE'];
