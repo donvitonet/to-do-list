@@ -8,6 +8,7 @@ Acesse o aplicativo no seu navegador utilizando o endereço
 - [Conventional Commits](https://github.com/BeeTech-global/bee-stylish/blob/master/commits/README.md)
 - [Makefile](https://embarcados.com.br/introducao-ao-makefile/)
 - [STDIN E STDOUT](https://www.certificacaolinux.com.br/comando-linux-condutores/)
+- [Dependency Injection](https://php-di.org/doc/understanding-di.html)
 
 ## /docs
 - Especificação da API: /docs/swagger.yaml
