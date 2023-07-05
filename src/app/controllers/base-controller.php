@@ -5,10 +5,10 @@ class BaseController
   public $templateEngine;
   public $taskModel;
 
-  public function __construct()
+  public function __construct($container = null)
   {
-    $this->templateEngine = new TemplateEngine();
-    $this->taskModel = new TaskModel();
+    $this->templateEngine = $container->get(TemplateEngine::class);
+    $this->taskModel = $container->get(TaskModel::class);
   }
 
   public function run($request)

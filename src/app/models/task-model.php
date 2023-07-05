@@ -7,9 +7,9 @@ class TaskModel
   CONST STATUS_COMPLETE = 1;
   CONST STATUS_UNCOMPLETE = 0;
 
-  public function __construct()
+  public function __construct($container = null)
   {
-    $this->db = new DatabaseConnection();
+    $this->db = $container->get(DatabaseConnection::class);
   }
 
   public function findAll($criteria)
@@ -24,6 +24,8 @@ class TaskModel
 
     $rows = $stmt->fetchAll();
     $this->db->closeConnection();
+
+    error_log(print_r($rows, true));
 
     return $rows;
   }
