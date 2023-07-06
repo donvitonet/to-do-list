@@ -4,9 +4,6 @@ class TaskModel
 {
   private $db;
 
-  CONST STATUS_COMPLETE = 1;
-  CONST STATUS_UNCOMPLETE = 0;
-
   public function __construct($container = null)
   {
     $this->db = $container->get(DatabaseConnection::class);
@@ -24,8 +21,6 @@ class TaskModel
 
     $rows = $stmt->fetchAll();
     $this->db->closeConnection();
-
-    error_log(print_r($rows, true));
 
     return $rows;
   }
@@ -130,9 +125,9 @@ class TaskModel
     }
 
     $where = array();
-    if (array_key_exists('done', $criteria['where'])) {
-      $value = $criteria['where']['done'];
-      $where[] = "done = $value";
+    if (array_key_exists('complete', $criteria['where'])) {
+      $value = (int) $criteria['where']['complete'];
+      $where[] = "complete = $value";
     }
 
     if (empty($where)) {

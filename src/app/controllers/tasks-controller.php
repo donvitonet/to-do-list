@@ -2,11 +2,6 @@
 
 class TasksController extends BaseController
 {
-  private $statusMap = array(
-    'complete' => TaskModel::STATUS_COMPLETE,
-    'uncomplete' => TaskModel::STATUS_UNCOMPLETE
-  );
-
   public function run($request)
   {
     $criteria = array(
@@ -18,9 +13,10 @@ class TasksController extends BaseController
       $criteria['orderBy'] = explode(',', $request->query['sort']);
     }
 
+
+
     if (array_key_exists('status', $request->query)) {
-      $taskStatus = strtolower($request->query['status']);
-      $criteria['where']['done'] = $this->statusMap[$taskStatus];
+      $criteria['where']['complete'] = $request->query['status'];
     }
 
     $this->render('ajax', array(

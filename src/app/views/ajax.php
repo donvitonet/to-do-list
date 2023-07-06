@@ -1,4 +1,3 @@
 <?php
-if ($content) {
-  echo json_encode($content);
-}
+header("Access-Control-Allow-Origin: *");
+echo json_encode($content);
