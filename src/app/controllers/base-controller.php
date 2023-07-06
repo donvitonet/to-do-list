@@ -2,11 +2,13 @@
 
 class BaseController
 {
+  public $validatorSchema;
   public $templateEngine;
   public $taskModel;
 
   public function __construct($container = null)
   {
+    $this->validatorSchema = $container->get(ValidatorSchema::class);
     $this->templateEngine = $container->get(TemplateEngine::class);
     $this->taskModel = $container->get(TaskModel::class);
   }

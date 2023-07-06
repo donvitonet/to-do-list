@@ -98,17 +98,18 @@ class TaskModel
 
   private function parseOrderBy($criteria)
   {
-    if (empty($criteria['orderBy'])) {
+    if (!array_key_exists('sort', $criteria)) {
       return "";
     }
 
     $orderBy = array();
-    if (in_array('-task', $criteria['orderBy'])) {
-      $orderBy[] = "task DESC";
+
+    if ($criteria['sort'] === '+task') {
+      $orderBy[] = "task ASC";
     }
 
-    if (in_array('-id', $criteria['orderBy'])) {
-      $orderBy[] = "id DESC";
+    if ($criteria['sort'] === '-task') {
+      $orderBy[] = "task DESC";
     }
 
     if (empty($orderBy)) {
@@ -120,13 +121,9 @@ class TaskModel
 
   private function parseWhere($criteria)
   {
-    if (empty($criteria['where'])) {
-      return "";
-    }
-
     $where = array();
-    if (array_key_exists('complete', $criteria['where'])) {
-      $value = (int) $criteria['where']['complete'];
+    if (array_key_exists('status', $criteria)) {
+      $value = $criteria['status'] === "true" ? 1 : 0;
       $where[] = "complete = $value";
     }
 

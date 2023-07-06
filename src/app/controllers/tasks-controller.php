@@ -4,23 +4,45 @@ class TasksController extends BaseController
 {
   public function run($request)
   {
-    $criteria = array(
-      'orderBy' => array(),
-      'where' => array()
+    $this->validatorSchema->validate(
+      $request->query,
+      $this->getValidationRules()['rules']
     );
 
-    if (array_key_exists('sort', $request->query)) {
-      $criteria['orderBy'] = explode(',', $request->query['sort']);
-    }
-
-
-
-    if (array_key_exists('status', $request->query)) {
-      $criteria['where']['complete'] = $request->query['status'];
-    }
+    $results = $this->taskModel->findAll($request->query);
 
     $this->render('ajax', array(
-      'content' => $this->taskModel->findAll($criteria)
+      'content' => $results
     ));
+  }
+
+  private function getValidationRules()
+  {
+    return array(
+      'rules' => array(
+        'status' => array(
+          'filter' => FILTER_CALLBACK,
+          'flags' => FILTER_NULL_ON_FAILURE,
+          'options' => function ($value) {
+            if (empty($value)) {
+              return false;
+            }
+
+            return in_array($value, array('true', 'false'));
+          }
+        ),
+        'sort' => array(
+          'filter' => FILTER_CALLBACK,
+          'flags' => FILTER_NULL_ON_FAILURE,
+          'options' => function ($value) {
+            if (empty($value)) {
+              return false;
+            }
+
+            return in_array($value, array('-task', '+task'));
+          }
+        )
+      )
+    );
   }
 }

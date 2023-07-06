@@ -21,12 +21,15 @@ include "src/app/controllers/complete-task-controller.php";
 include "src/app/controllers/uncomplete-task-controller.php";
 include "src/app/controllers/not-found-controller.php";
 
+include "src/infra/tools/validator-schema.php";
+
 include "src/infra/di/container.php";
 
 $container = new DIContainer([
   DatabaseConnection::class,
   TaskModel::class,
   TemplateEngine::class,
+  ValidatorSchema::class,
   HomeController::class,
   TasksController::class,
   DetailTaskController::class,

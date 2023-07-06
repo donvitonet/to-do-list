@@ -22,11 +22,17 @@ class Router
   {
     $route = $this->getRoute($request);
     if ($route) {
-      $route->handler->run($request);
+      try {
+        $route->handler->run($request);
+      } catch (\Throwable $th) {
+        error_log(print_r($th, true));
+      }
+
+
       return;
     }
 
     $notFoundHandler = new NotFoundController();
-    $notFoundHandler->run();
+    $notFoundHandler->run($request);
   }
 }
