@@ -3,6 +3,9 @@
 build:
 	docker-compose build app
 
+down:
+	docker-compose down
+
 up:
 	docker-compose up -d
 
