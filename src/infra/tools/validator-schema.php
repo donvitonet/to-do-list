@@ -12,7 +12,11 @@ class ValidatorSchema
     }
 
     if ($this->requiredDataMissing($results, $required)) {
-      throw new Exception('Required Data Missing');
+      throw new Exception('Required data missing');
+    }
+
+    if ($this->additionalData($data, $rules)) {
+      throw new Exception('Invalid additional data');
     }
   }
 
@@ -37,6 +41,14 @@ class ValidatorSchema
   {
     $resultsKeys = array_keys($results);
     $diff = array_diff($required, $resultsKeys);
+    return !empty($diff);
+  }
+
+  private function additionalData($data, $rules)
+  {
+    $dataKeys = array_keys($data);
+    $rulesKeys = array_keys($rules);
+    $diff = array_diff($dataKeys, $rulesKeys);
     return !empty($diff);
   }
 }
