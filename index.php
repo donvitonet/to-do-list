@@ -39,7 +39,6 @@ $container = new DIContainer([
   DeleteTaskController::class,
   CompleteTaskController::class,
   UncompleteTaskController::class,
-  CORSController::class,
   NotFoundController::class,
   Router::class
 ]);
@@ -48,8 +47,6 @@ $router = $container->get(Router::class);
 $router->addRoute(new Route('GET', '/', HomeController::class));
 $router->addRoute(new Route('GET', '/tasks', TasksController::class));
 $router->addRoute(new Route('POST', '/tasks', CreateTaskController::class));
-$router->addRoute(new Route('OPTIONS', '/tasks', CORSController::class));
-
 $router->addRoute(new Route('GET', '/task', DetailTaskController::class));
 $router->addRoute(new Route('PUT', '/task', UpdateTaskController::class));
 $router->addRoute(new Route('DELETE', '/task', DeleteTaskController::class));
