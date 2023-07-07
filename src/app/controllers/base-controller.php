@@ -2,9 +2,9 @@
 
 class BaseController
 {
-  public $validatorSchema;
-  public $templateEngine;
-  public $taskModel;
+  public ValidatorSchema $validatorSchema;
+  public TemplateEngine $templateEngine;
+  public TaskModel $taskModel;
 
   public function __construct($container = null)
   {

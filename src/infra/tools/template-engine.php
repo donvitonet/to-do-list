@@ -6,7 +6,13 @@ class TemplateEngine
 
   public function __construct()
   {
-    $this->templatePath = dirname(__FILE__);
+    $rootPath = realpath('.');
+    $this->templatePath = implode(DIRECTORY_SEPARATOR,  array(
+      $rootPath,
+      'src',
+      'app',
+      'views'
+    ));
   }
 
   public function render($template, $data)

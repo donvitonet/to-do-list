@@ -1,14 +1,17 @@
 <?php
 
+include "src/infra/db/connection.php";
+
 include "src/infra/http/base-url.php";
 include "src/infra/http/request.php";
 include "src/infra/http/route.php";
 include "src/infra/http/router.php";
 
-include "src/infra/mysql/connection.php";
-include "src/app/models/task-model.php";
+include "src/infra/tools/validator-schema.php";
+include "src/infra/tools/di-container.php";
+include "src/infra/tools/template-engine.php";
 
-include "src/app/views/template-engine.php";
+include "src/app/models/task-model.php";
 
 include "src/app/controllers/base-controller.php";
 include "src/app/controllers/home-controller.php";
@@ -19,12 +22,7 @@ include "src/app/controllers/update-task-controller.php";
 include "src/app/controllers/delete-task-controller.php";
 include "src/app/controllers/complete-task-controller.php";
 include "src/app/controllers/uncomplete-task-controller.php";
-include "src/app/controllers/cors-controller.php";
 include "src/app/controllers/not-found-controller.php";
-
-include "src/infra/tools/validator-schema.php";
-
-include "src/infra/di/container.php";
 
 $container = new DIContainer([
   DatabaseConnection::class,
