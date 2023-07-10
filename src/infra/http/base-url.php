@@ -15,6 +15,12 @@ class BaseURL
       strtoupper($method)
     );
     $base = array_merge($base, $segments);
-    return implode('_', $base);
+
+    $generatedBaseURL = implode('_', $base);
+    $generatedBaseURL = str_replace(array('__', ':id'), array('_', 'PARAM'), $generatedBaseURL);
+    $generatedBaseURL = strtoupper($generatedBaseURL);
+    $generatedBaseURL = preg_replace('(\d+)', 'PARAM', $generatedBaseURL);
+
+    return $generatedBaseURL;
   }
 }
