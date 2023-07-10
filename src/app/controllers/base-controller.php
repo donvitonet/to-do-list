@@ -13,7 +13,7 @@ class BaseController
     $this->taskModel = $container->get(TaskModel::class);
   }
 
-  public function run($request)
+  public function run(Request $request)
   {
     throw new Exception('Not implemented');
   }

@@ -2,28 +2,16 @@
 
 class DetailTaskController extends BaseController
 {
-  private function getRules()
+  public function run(Request $request)
   {
-    return array(
-      'id' => array(
-        'filter' => FILTER_VALIDATE_INT,
-        'flags' => FILTER_NULL_ON_FAILURE,
-        'options' => array(
-          'min_range' => 1,
-          'max_range' => PHP_INT_MAX,
-        )
-      )
+    $id = $request->params->id;
+
+    $this->validatorSchema->validate(
+      array('id' => $id),
+      $this->getValidationRules()['rules'],
+      $this->getValidationRules()['required']
     );
-  }
 
-  public function run($request)
-  {
-    $inputs = filter_var_array($request->query, $this->getRules(), true);
-    if (array_search(null, $inputs) !== false) {
-      throw new Exception('Bad Request');
-    }
-
-    $id = $request->query['id'];
     $task = $this->taskModel->findById($id);
     if (!$task) {
       throw new Exception('Task not found');
@@ -32,5 +20,24 @@ class DetailTaskController extends BaseController
     $this->render('ajax', array(
       'content' => $task
     ));
+  }
+
+  private function getValidationRules()
+  {
+    return array(
+      'rules' => array(
+        'id' => array(
+          'filter' => FILTER_VALIDATE_INT,
+          'flags' => FILTER_NULL_ON_FAILURE,
+          'options' => array(
+            'min_range' => 1,
+            'max_range' => PHP_INT_MAX,
+          )
+        )
+      ),
+      'required' => array(
+        'id'
+      )
+    );
   }
 }

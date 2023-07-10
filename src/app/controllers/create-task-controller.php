@@ -2,15 +2,15 @@
 
 class CreateTaskController extends BaseController
 {
-  public function run($request)
+  public function run(Request $request)
   {
     $this->validatorSchema->validate(
-      $request->payload,
+      $request->body,
       $this->getValidationRules()['rules'],
       $this->getValidationRules()['required']
     );
 
-    $id = $this->taskModel->create($request->payload);
+    $id = $this->taskModel->create($request->body);
     $task = $this->taskModel->findById($id);
 
     $this->render('ajax', array(
