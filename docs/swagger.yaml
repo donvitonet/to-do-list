@@ -103,7 +103,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Task'
+              $ref: '#/components/schemas/TaskName'
         required: true
       responses:
         204:
@@ -232,6 +232,12 @@ components:
       type: integer
       minimum: 1
       example: 10
+    TaskName:
+      type: object
+      properties:
+        task:
+          type: string
+          example: Atualizar o servidor
     Task:
       type: object
       properties:
