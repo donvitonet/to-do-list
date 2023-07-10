@@ -45,10 +45,10 @@ $router = $container->get(Router::class);
 $router->addRoute(new Route('GET', '/', HomeController::class));
 $router->addRoute(new Route('GET', '/tasks', TasksController::class));
 $router->addRoute(new Route('POST', '/tasks', CreateTaskController::class));
-$router->addRoute(new Route('GET', '/task', DetailTaskController::class));
-$router->addRoute(new Route('PUT', '/task', UpdateTaskController::class));
-$router->addRoute(new Route('DELETE', '/task', DeleteTaskController::class));
-$router->addRoute(new Route('PATCH', '/task/complete', CompleteTaskController::class));
-$router->addRoute(new Route('PATCH', '/task/uncomplete', UncompleteTaskController::class));
+$router->addRoute(new Route('GET', '/tasks/:id', DetailTaskController::class));
+$router->addRoute(new Route('PUT', '/tasks/:id', UpdateTaskController::class));
+$router->addRoute(new Route('DELETE', '/tasks/:id', DeleteTaskController::class));
+$router->addRoute(new Route('PATCH', '/tasks/:id/complete', CompleteTaskController::class));
+$router->addRoute(new Route('PATCH', '/tasks/:id/uncomplete', UncompleteTaskController::class));
 
 $router->dispatch(new Request());
