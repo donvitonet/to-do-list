@@ -1,6 +1,10 @@
 <?php
 
-class DIContainer {
+namespace infra\tools;
+
+use \Exception;
+
+class Container {
   private array $entries = array();
 
   public function __construct(array $entries) {

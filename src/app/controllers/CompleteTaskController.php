@@ -1,24 +1,25 @@
 <?php
 
-class DetailTaskController extends BaseController
+namespace app\controllers;
+
+use infra\http\Request;
+
+class CompleteTaskController extends BaseController
 {
   public function run(Request $request)
   {
-    $id = $request->params->id;
-
+    $data = array('id' => $request->params->id);
     $this->validatorSchema->validate(
-      array('id' => $id),
+      $data,
       $this->getValidationRules()['rules'],
       $this->getValidationRules()['required']
     );
 
-    $task = $this->taskModel->findById($id);
-    if (!$task) {
-      throw new Exception('Task not found');
-    }
+    $data['complete'] = 1;
+    $this->taskModel->updateById($data);
 
     $this->render('ajax', array(
-      'content' => $task
+      'content' => array()
     ));
   }
 

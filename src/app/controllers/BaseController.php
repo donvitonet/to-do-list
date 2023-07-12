@@ -1,10 +1,20 @@
 <?php
 
+namespace app\controllers;
+
+use \Exception;
+use app\models\TaskModel;
+use infra\http\Request;
+use infra\tools\TemplateEngine;
+use infra\tools\ValidatorSchema;
+
 class BaseController
 {
-  public ValidatorSchema $validatorSchema;
-  public TemplateEngine $templateEngine;
   public TaskModel $taskModel;
+  public TemplateEngine $templateEngine;
+  public ValidatorSchema $validatorSchema;
+
+
 
   public function __construct($container = null)
   {

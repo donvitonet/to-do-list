@@ -1,12 +1,17 @@
 <?php
 
+namespace app\models;
+
+use \Exception;
+use infra\db\Connection;
+
 class TaskModel
 {
   private $db;
 
   public function __construct($container = null)
   {
-    $this->db = $container->get(DatabaseConnection::class);
+    $this->db = $container->get(Connection::class);
   }
 
   public function findAll($criteria)
@@ -62,8 +67,8 @@ class TaskModel
       $assignmentList[] = "task = :task";
     }
 
-    if (array_key_exists('done', $data)) {
-      $assignmentList[] = "done = :done";
+    if (array_key_exists('complete', $data)) {
+      $assignmentList[] = "complete = :complete";
     }
 
     if (empty($assignmentList)) {

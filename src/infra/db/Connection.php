@@ -1,6 +1,13 @@
 <?php
 
-class DatabaseConnection
+namespace infra\db;
+
+use \Exception;
+use \PDO;
+use \PDOException;
+
+
+class Connection
 {
   private $con;
 

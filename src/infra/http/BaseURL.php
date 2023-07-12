@@ -1,5 +1,7 @@
 <?php
 
+namespace infra\http;
+
 class BaseURL
 {
   public static function generate($url, $method)

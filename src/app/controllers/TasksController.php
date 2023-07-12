@@ -1,8 +1,12 @@
 <?php
 
+namespace app\controllers;
+
+use infra\http\Request;
+
 class TasksController extends BaseController
 {
-  public function run($request)
+  public function run(Request $request)
   {
     $this->validatorSchema->validate(
       $request->query,

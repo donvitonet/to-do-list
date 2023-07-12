@@ -1,5 +1,9 @@
 <?php
 
+namespace infra\http;
+
+use \stdClass;
+
 class Request
 {
   public string $url;

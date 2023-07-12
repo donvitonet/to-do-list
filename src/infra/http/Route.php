@@ -1,5 +1,9 @@
 <?php
 
+namespace infra\http;
+
+use infra\http\BaseURL;
+
 class Route
 {
     public $url;

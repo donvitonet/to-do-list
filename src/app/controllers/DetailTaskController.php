@@ -1,17 +1,26 @@
 <?php
 
-class CreateTaskController extends BaseController
+namespace app\controllers;
+
+use \Exception;
+use infra\http\Request;
+
+class DetailTaskController extends BaseController
 {
   public function run(Request $request)
   {
+    $id = $request->params->id;
+
     $this->validatorSchema->validate(
-      $request->body,
+      array('id' => $id),
       $this->getValidationRules()['rules'],
       $this->getValidationRules()['required']
     );
 
-    $id = $this->taskModel->create($request->body);
     $task = $this->taskModel->findById($id);
+    if (!$task) {
+      throw new Exception('Task not found');
+    }
 
     $this->render('ajax', array(
       'content' => $task
@@ -22,20 +31,17 @@ class CreateTaskController extends BaseController
   {
     return array(
       'rules' => array(
-        'task' => array(
-          'filter' => FILTER_CALLBACK,
+        'id' => array(
+          'filter' => FILTER_VALIDATE_INT,
           'flags' => FILTER_NULL_ON_FAILURE,
-          'options' => function ($value) {
-            if (strlen($value) >= 1 && strlen($value) <= 45 && !empty($value)) {
-              return true;
-            }
-
-            return false;
-          }
+          'options' => array(
+            'min_range' => 1,
+            'max_range' => PHP_INT_MAX,
+          )
         )
       ),
       'required' => array(
-        'task'
+        'id'
       )
     );
   }

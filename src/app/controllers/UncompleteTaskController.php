@@ -1,29 +1,25 @@
 <?php
 
-class UpdateTaskController extends BaseController
+namespace app\controllers;
+
+use infra\http\Request;
+
+class UncompleteTaskController extends BaseController
 {
   public function run(Request $request)
   {
-    $data = array_merge(
-      array('id' => $request->params->id),
-      $request->body
-    );
-
+    $data = array('id' => $request->params->id);
     $this->validatorSchema->validate(
       $data,
       $this->getValidationRules()['rules'],
       $this->getValidationRules()['required']
     );
 
-    $task = $this->taskModel->findById($data['id']);
-    if (!$task) {
-      throw new Exception('Task not found');
-    }
-
+    $data['complete'] = 0;
     $this->taskModel->updateById($data);
 
     $this->render('ajax', array(
-      'content' => $task
+      'content' => array()
     ));
   }
 
@@ -38,22 +34,10 @@ class UpdateTaskController extends BaseController
             'min_range' => 1,
             'max_range' => PHP_INT_MAX,
           )
-        ),
-        'task' => array(
-          'filter' => FILTER_CALLBACK,
-          'flags' => FILTER_NULL_ON_FAILURE,
-          'options' => function ($value) {
-            if (strlen($value) >= 1 && strlen($value) <= 45 && !empty($value)) {
-              return true;
-            }
-
-            return false;
-          }
         )
       ),
       'required' => array(
-        'id',
-        'task'
+        'id'
       )
     );
   }

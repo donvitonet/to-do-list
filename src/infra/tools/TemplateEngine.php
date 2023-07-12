@@ -1,5 +1,9 @@
 <?php
 
+namespace infra\tools;
+
+use \Exception;
+
 class TemplateEngine
 {
   private $templatePath;

@@ -1,5 +1,9 @@
 <?php
 
+namespace infra\tools;
+
+use \Exception;
+
 class ValidatorSchema
 {
   public function validate($data = array(), $rules = array(), $required = array())

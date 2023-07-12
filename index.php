@@ -1,34 +1,27 @@
 <?php
 
-include "src/infra/db/connection.php";
+use infra\http\Route;
+use infra\http\Request;
+use infra\http\Router;
 
-include "src/infra/http/base-url.php";
-include "src/infra/http/request.php";
-include "src/infra/http/route.php";
-include "src/infra/http/router.php";
+use app\controllers\HomeController;
+use app\controllers\TasksController;
+use app\controllers\DetailTaskController;
+use app\controllers\CreateTaskController;
+use app\controllers\UpdateTaskController;
+use app\controllers\DeleteTaskController;
+use app\controllers\CompleteTaskController;
+use app\controllers\UncompleteTaskController;
+use app\controllers\NotFoundController;
 
-include "src/infra/tools/validator-schema.php";
-include "src/infra/tools/di-container.php";
-include "src/infra/tools/template-engine.php";
+include "src/infra/Constants.php";
+include "src/infra/tools/Autoloader.php";
 
-include "src/app/models/task-model.php";
-
-include "src/app/controllers/base-controller.php";
-include "src/app/controllers/home-controller.php";
-include "src/app/controllers/tasks-controller.php";
-include "src/app/controllers/detail-task-controller.php";
-include "src/app/controllers/create-task-controller.php";
-include "src/app/controllers/update-task-controller.php";
-include "src/app/controllers/delete-task-controller.php";
-include "src/app/controllers/complete-task-controller.php";
-include "src/app/controllers/uncomplete-task-controller.php";
-include "src/app/controllers/not-found-controller.php";
-
-$container = new DIContainer([
-  DatabaseConnection::class,
-  TaskModel::class,
-  TemplateEngine::class,
-  ValidatorSchema::class,
+$container = new infra\tools\Container([
+  infra\db\Connection::class,
+  app\models\TaskModel::class,
+  infra\tools\TemplateEngine::class,
+  infra\tools\ValidatorSchema::class,
   HomeController::class,
   TasksController::class,
   DetailTaskController::class,
@@ -38,7 +31,7 @@ $container = new DIContainer([
   CompleteTaskController::class,
   UncompleteTaskController::class,
   NotFoundController::class,
-  Router::class
+  infra\http\Router::class
 ]);
 
 $router = $container->get(Router::class);
