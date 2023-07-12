@@ -2,24 +2,38 @@
 
 namespace app\controllers;
 
+use \Throwable;
 use infra\http\Request;
+use infra\http\Response;
+
 
 class CreateTaskController extends BaseController
 {
   public function run(Request $request)
   {
-    $this->validatorSchema->validate(
-      $request->body,
-      $this->getValidationRules()['rules'],
-      $this->getValidationRules()['required']
-    );
+    try {
+      $this->validatorSchema->validate(
+        $request->body,
+        $this->getValidationRules()['rules'],
+        $this->getValidationRules()['required']
+      );
+    } catch (\Throwable $th) {
+      Response::send(array(
+        'message' => 'Requisição inválida'
+      ), 400);
+      return;
+    }
 
-    $id = $this->taskModel->create($request->body);
-    $task = $this->taskModel->findById($id);
-
-    $this->render('ajax', array(
-      'content' => $task
-    ));
+    try {
+      $taskId = $this->taskModel->create($request->body);
+      Response::send(array(
+        'id' => $taskId
+      ), 201);
+    } catch (Throwable $th) {
+      Response::send(array(
+        'message' => 'Ocorreu um erro ao processar a requisição.'
+      ), 500);
+    }
   }
 
   private function getValidationRules()
