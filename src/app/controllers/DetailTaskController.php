@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use \Exception;
 use infra\http\Request;
+use infra\http\Response;
 
 class DetailTaskController extends BaseController
 {
@@ -11,20 +11,34 @@ class DetailTaskController extends BaseController
   {
     $id = $request->params->id;
 
-    $this->validatorSchema->validate(
-      array('id' => $id),
-      $this->getValidationRules()['rules'],
-      $this->getValidationRules()['required']
-    );
-
-    $task = $this->taskModel->findById($id);
-    if (!$task) {
-      throw new Exception('Task not found');
+    try {
+      $this->validatorSchema->validate(
+        array('id' => $id),
+        $this->getValidationRules()['rules'],
+        $this->getValidationRules()['required']
+      );
+    } catch (\Throwable $th) {
+      Response::sendStatus(400);
+      return;
     }
 
-    $this->render('ajax', array(
-      'content' => $task
-    ));
+    $task = null;
+
+    try {
+      $task = $this->taskModel->findById($id);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+      return;
+    }
+
+    if (!$task) {
+      Response::send(array(
+        'message' => 'Não encontrado.'
+      ), 404);
+      return;
+    }
+
+    Response::send($task);
   }
 
   private function getValidationRules()
