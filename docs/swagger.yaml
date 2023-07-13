@@ -89,6 +89,8 @@ paths:
                 $ref: '#/components/schemas/Task'
         400:
           $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
         500:
           $ref: '#/components/responses/500InternalServerError'
     put:
@@ -110,6 +112,8 @@ paths:
           $ref: '#/components/responses/204NoContent'
         400:
           $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
         500:
           $ref: '#/components/responses/500InternalServerError'
     delete:
@@ -224,6 +228,8 @@ components:
       description: Requisição processada com sucesso e sem resposta de retorno.
     400BadRequest:
       description: Requisição inválida
+    404NotFound:
+      description: Não encontrado
     500InternalServerError:
       description: Ocorreu um erro ao processar a requisição.
 
