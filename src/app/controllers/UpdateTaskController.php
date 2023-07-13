@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use \Exception;
 use infra\http\Request;
+use infra\http\Response;
 
 class UpdateTaskController extends BaseController
 {
@@ -14,22 +14,39 @@ class UpdateTaskController extends BaseController
       $request->body
     );
 
-    $this->validatorSchema->validate(
-      $data,
-      $this->getValidationRules()['rules'],
-      $this->getValidationRules()['required']
-    );
-
-    $task = $this->taskModel->findById($data['id']);
-    if (!$task) {
-      throw new Exception('Task not found');
+    try {
+      $this->validatorSchema->validate(
+        $data,
+        $this->getValidationRules()['rules'],
+        $this->getValidationRules()['required']
+      );
+    } catch (\Throwable $th) {
+      Response::sendStatus(400);
+      return;
     }
 
-    $this->taskModel->updateById($data);
+    $task = null;
 
-    $this->render('ajax', array(
-      'content' => array()
-    ));
+    try {
+      $task = $this->taskModel->findById($data['id']);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+      return;
+    }
+
+    if (!$task) {
+      Response::sendStatus(404);
+      return;
+    }
+
+    try {
+      $this->taskModel->updateById($data);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+      return;
+    }
+
+    Response::sendStatus(204);
   }
 
   private function getValidationRules()
