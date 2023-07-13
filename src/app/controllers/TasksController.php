@@ -3,21 +3,28 @@
 namespace app\controllers;
 
 use infra\http\Request;
+use infra\http\Response;
 
 class TasksController extends BaseController
 {
   public function run(Request $request)
   {
-    $this->validatorSchema->validate(
-      $request->query,
-      $this->getValidationRules()['rules']
-    );
+    try {
+      $this->validatorSchema->validate(
+        $request->query,
+        $this->getValidationRules()['rules'],
+      );
+    } catch (\Throwable $th) {
+      Response::sendStatus(400);
+      return;
+    }
 
-    $results = $this->taskModel->findAll($request->query);
-
-    $this->render('ajax', array(
-      'content' => $results
-    ));
+    try {
+      $results = $this->taskModel->findAll($request->query);
+      Response::send($results);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+    }
   }
 
   private function getValidationRules()
