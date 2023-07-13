@@ -18,21 +18,15 @@ class CreateTaskController extends BaseController
         $this->getValidationRules()['required']
       );
     } catch (\Throwable $th) {
-      Response::send(array(
-        'message' => 'Requisição inválida'
-      ), 400);
+      Response::sendStatus(400);
       return;
     }
 
     try {
       $taskId = $this->taskModel->create($request->body);
-      Response::send(array(
-        'id' => $taskId
-      ), 201);
+      Response::sendCreated($taskId);
     } catch (Throwable $th) {
-      Response::send(array(
-        'message' => 'Ocorreu um erro ao processar a requisição.'
-      ), 500);
+      Response::sendStatus(500);
     }
   }
 
