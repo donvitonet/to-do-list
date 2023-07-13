@@ -32,9 +32,7 @@ class DetailTaskController extends BaseController
     }
 
     if (!$task) {
-      Response::send(array(
-        'message' => 'Não encontrado.'
-      ), 404);
+      Response::sendStatus(404);
       return;
     }
 
