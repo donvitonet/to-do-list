@@ -3,24 +3,34 @@
 namespace app\controllers;
 
 use infra\http\Request;
+use infra\http\Response;
 
 class CompleteTaskController extends BaseController
 {
   public function run(Request $request)
   {
     $data = array('id' => $request->params->id);
-    $this->validatorSchema->validate(
-      $data,
-      $this->getValidationRules()['rules'],
-      $this->getValidationRules()['required']
-    );
 
-    $data['complete'] = 1;
-    $this->taskModel->updateById($data);
+    try {
+      $this->validatorSchema->validate(
+        $data,
+        $this->getValidationRules()['rules'],
+        $this->getValidationRules()['required']
+      );
+    } catch (\Throwable $th) {
+      Response::sendStatus(400);
+      return;
+    }
 
-    $this->render('ajax', array(
-      'content' => array()
-    ));
+    try {
+      $data['complete'] = 1;
+      $this->taskModel->updateById($data);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+      return;
+    }
+
+    Response::sendStatus(204);
   }
 
   private function getValidationRules()
