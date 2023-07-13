@@ -3,23 +3,33 @@
 namespace app\controllers;
 
 use infra\http\Request;
+use infra\http\Response;
 
 class DeleteTaskController extends BaseController
 {
   public function run(Request $request)
   {
     $data = array('id' => $request->params->id);
-    $this->validatorSchema->validate(
-      $data,
-      $this->getValidationRules()['rules'],
-      $this->getValidationRules()['required']
-    );
 
-    $this->taskModel->deleteById($data);
+    try {
+      $this->validatorSchema->validate(
+        $data,
+        $this->getValidationRules()['rules'],
+        $this->getValidationRules()['required']
+      );
+    } catch (\Throwable $th) {
+      Response::sendStatus(400);
+      return;
+    }
 
-    $this->render('ajax', array(
-      'content' => array()
-    ));
+    try {
+      $this->taskModel->deleteById($data);
+    } catch (\Throwable $th) {
+      Response::sendStatus(500);
+      return;
+    }
+
+    Response::sendStatus(204);
   }
 
   private function getValidationRules()
