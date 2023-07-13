@@ -6,6 +6,17 @@ use Exception;
 
 class Response
 {
+  public static function sendCreated(int $id)
+  {
+    if (!$id) {
+      throw new Exception("ID not provided");
+    }
+
+    Response::send(array(
+      'id' => $id
+    ), 201);
+  }
+
   public static function sendStatus($httpResponseCode)
   {
     self::send(array(), $httpResponseCode);
